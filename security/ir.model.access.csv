@@ -1,0 +1,5 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_rental_property_user,rental.property.user,model_rental_property,group_rental_user,1,0,0,0
+access_rental_property_manager,rental.property.manager,model_rental_property,group_rental_manager,1,1,1,1
+access_rental_booking_user,rental.booking.user,model_rental_booking,group_rental_user,1,1,1,0
+access_rental_booking_manager,rental.booking.manager,model_rental_booking,group_rental_manager,1,1,1,1

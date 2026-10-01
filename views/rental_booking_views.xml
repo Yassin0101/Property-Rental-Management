@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+
+        <!-- Tree View -->
+        <record id="view_rental_booking_tree" model="ir.ui.view">
+            <field name="name">rental.booking.tree</field>
+            <field name="model">rental.booking</field>
+            <field name="arch" type="xml">
+                <tree decoration-info="state=='draft'" decoration-success="state=='confirmed'"
+                      decoration-muted="state in ('checked_out','cancelled')">
+                    <field name="name"/>
+                    <field name="property_id"/>
+                    <field name="customer_id"/>
+                    <field name="check_in"/>
+                    <field name="check_out"/>
+                    <field name="nights"/>
+                    <field name="total_amount" sum="Total"/>
+                    <field name="state"/>
+                </tree>
+            </field>
+        </record>
+
+        <!-- Form View -->
+        <record id="view_rental_booking_form" model="ir.ui.view">
+            <field name="name">rental.booking.form</field>
+            <field name="model">rental.booking</field>
+            <field name="arch" type="xml">
+                <form>
+                    <header>
+                        <button name="action_confirm" string="Confirm" type="object"
+                                class="btn-primary" invisible="state != 'draft'"/>
+                        <button name="action_check_in" string="Check In" type="object"
+                                class="btn-primary" invisible="state != 'confirmed'"/>
+                        <button name="action_check_out" string="Check Out" type="object"
+                                class="btn-primary" invisible="state != 'checked_in'"/>
+                        <button name="action_cancel" string="Cancel" type="object"
+                                invisible="state in ('cancelled', 'checked_out')"/>
+                        <button name="action_reset_to_draft" string="Reset to Draft" type="object"
+                                invisible="state != 'cancelled'"/>
+                        <field name="state" widget="statusbar"
+                               statusbar_visible="draft,confirmed,checked_in,checked_out"/>
+                    </header>
+                    <sheet>
+                        <div class="oe_title">
+                            <h1><field name="name" readonly="1"/></h1>
+                        </div>
+                        <group>
+                            <group>
+                                <field name="property_id"/>
+                                <field name="customer_id"/>
+                                <field name="price_per_night"/>
+                            </group>
+                            <group>
+                                <field name="check_in"/>
+                                <field name="check_out"/>
+                                <field name="nights"/>
+                                <field name="total_amount"/>
+                            </group>
+                        </group>
+                        <group string="Notes">
+                            <field name="notes" nolabel="1"/>
+                        </group>
+                    </sheet>
+                    <div class="oe_chatter">
+                        <field name="message_follower_ids"/>
+                        <field name="activity_ids"/>
+                        <field name="message_ids"/>
+                    </div>
+                </form>
+            </field>
+        </record>
+
+        <!-- Search View -->
+        <record id="view_rental_booking_search" model="ir.ui.view">
+            <field name="name">rental.booking.search</field>
+            <field name="model">rental.booking</field>
+            <field name="arch" type="xml">
+                <search>
+                    <field name="name"/>
+                    <field name="property_id"/>
+                    <field name="customer_id"/>
+                    <filter string="Draft" name="filter_draft" domain="[('state','=','draft')]"/>
+                    <filter string="Confirmed" name="filter_confirmed" domain="[('state','=','confirmed')]"/>
+                    <filter string="Active Stays" name="filter_checked_in" domain="[('state','=','checked_in')]"/>
+                    <group expand="0" string="Group By">
+                        <filter string="Property" name="group_property" context="{'group_by':'property_id'}"/>
+                        <filter string="Status" name="group_state" context="{'group_by':'state'}"/>
+                    </group>
+                </search>
+            </field>
+        </record>
+
+        <!-- Action -->
+        <record id="action_rental_booking" model="ir.actions.act_window">
+            <field name="name">Bookings</field>
+            <field name="res_model">rental.booking</field>
+            <field name="view_mode">tree,form</field>
+            <field name="search_view_id" ref="view_rental_booking_search"/>
+            <field name="help" type="html">
+                <p class="o_view_nocontent_smiling_face">
+                    Create your first booking
+                </p>
+            </field>
+        </record>
+
+    </data>
+</odoo>

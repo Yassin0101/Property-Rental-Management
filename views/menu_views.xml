@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <menuitem id="menu_rental_root" name="Property Rental" sequence="10"/>
+
+        <menuitem id="menu_rental_properties" name="Properties"
+                  parent="menu_rental_root" action="action_rental_property" sequence="10"/>
+
+        <menuitem id="menu_rental_bookings" name="Bookings"
+                  parent="menu_rental_root" action="action_rental_booking" sequence="20"/>
+    </data>
+</odoo>
